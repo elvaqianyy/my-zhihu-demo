@@ -1,0 +1,28 @@
+.home {
+  display: flex;
+  margin: 10px auto;
+  align-items: flex-start;
+  .home-main {
+    margin-right: 10px;
+    margin-bottom: 0;
+    width: 694px;
+    flex-shrink:0;
+    .home-ad {
+      width:100%;
+      img {
+        box-sizing: border-box;
+        margin: 0;
+        min-width: 0;
+        max-width: 100%;
+        height: auto;
+        width: 100%;
+        border-radius: 2px;
+        margin-bottom: 10px;
+        object-fit: cover; //被替换的内容在保持其宽高比的同时填充元素的整个内容框。
+      }
+    }
+  }
+  .home-sidebar {
+    flex: 1;
+  }
+}
