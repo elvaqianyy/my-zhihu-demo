@@ -11,7 +11,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: 15px;
 }
-
+p:focus,span:focus {
+  outline: none;
+  border: none;
+}
+p,span,a {
+  -webkit-tap-highlight-color: transparent;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

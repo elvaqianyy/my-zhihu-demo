@@ -1,10 +1,33 @@
 import React from 'react'
 import { ReactComponent as Icon} from '../../images/arrow-down.svg'
+import { ReactComponent as AgreeIcon} from '../../images/agree.svg'
+import { ReactComponent as ResetIcon} from '../../images/reset.svg'
 require('./index.scss')
 class Recommend extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      agreeNum: '3460',
+      commentsNum:'499',
+      isAgreeActive: false
+    }
+  }
+  handleAgree = () => {
+    console.log('同意')
+    // this.setState((state) => ({
+    //   agreeNum: +state.agreeNum + 1
+    // }))
+    this.setState({
+      agreeNum: +this.state.agreeNum + 1,
+      isAgreeActive: !this.state.isAgreeActive
+    })
+  }
+  handleReset = () => {
+    console.log('取消')
+  }
+  //是否点击同意
+  getAgreeClass = () => {
+    return this.state.isAgreeActive ? 'isActive' : ''
   }
   render() {
     return (
@@ -21,7 +44,24 @@ class Recommend extends React.Component {
               </button>
             </div>
             <div className="richContent-action">
-              <button>赞同</button>
+              <div className="button-left">
+                <span
+                  className={`agree ${this.state.isAgreeActive ? 'isActive' : ''}`}
+                  onClick={this.handleAgree}
+                >
+                  <AgreeIcon className="agree-icon"/>
+                    <p>赞同 <span>{this.state.agreeNum}</span></p>
+                </span>
+                <span className="reset" onClick={this.handleReset}>
+                  <ResetIcon className="reset-icon"/>
+                </span>
+              </div>
+              <div className="button-right">
+                <p className="comments">{this.state.commentsNum}条评论</p>
+                <p>分享</p>
+                <p>收藏</p>
+                <p>喜欢</p>
+              </div>
             </div>
           </div>
         </div>
