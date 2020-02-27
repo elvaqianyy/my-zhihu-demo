@@ -1,0 +1,29 @@
+.comments-contain {
+  width: 100%;
+}
+.comments {
+  border: 1px solid #ebebeb;
+  box-shadow: 0 1px 3px rgba(26,26,26,.1);
+  background: #fff;
+  margin-top: 12px;
+  overflow: visible;
+  border-radius: 4px;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid #f6f6f6;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
+  .topbar-title {
+    font-size: 15px;
+    font-weight: 600;
+    font-synthesis: style;
+    color: #1a1a1a;
+  }
+  .topbar-option {
+    color: #646464;
+  }
+}

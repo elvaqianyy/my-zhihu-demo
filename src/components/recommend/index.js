@@ -2,33 +2,40 @@ import React from 'react'
 import { ReactComponent as Icon} from '../../images/arrow-down.svg'
 import { ReactComponent as AgreeIcon} from '../../images/agree.svg'
 import { ReactComponent as ResetIcon} from '../../images/reset.svg'
+import CommentsContainer from './CommentsContainer/index.js'
+
 require('./index.scss')
+
 class Recommend extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       agreeNum: '3460',
       commentsNum:'499',
-      isAgreeActive: false
+      isAgreeActive: false,
+      isAgreeActive2: false,
+      select: ''
     }
   }
+  // 同意
   handleAgree = () => {
     console.log('同意')
-    // this.setState((state) => ({
-    //   agreeNum: +state.agreeNum + 1
-    // }))
     this.setState({
-      agreeNum: +this.state.agreeNum + 1,
-      isAgreeActive: !this.state.isAgreeActive
+      isAgreeActive: !this.state.isAgreeActive,
+      isAgreeActive2: false,
+      agreeNum: this.state.isAgreeActive? (+this.state.agreeNum - 1) : (+this.state.agreeNum + 1)
     })
   }
+  // 撤销同意
   handleReset = () => {
     console.log('取消')
+    this.setState({
+      isAgreeActive2: !this.state.isAgreeActive2,
+      isAgreeActive: this.state.isAgreeActive2,
+      agreeNum: this.state.isAgreeActive2? (+this.state.agreeNum + 1) : (+this.state.agreeNum - 1)
+    })
   }
-  //是否点击同意
-  getAgreeClass = () => {
-    return this.state.isAgreeActive ? 'isActive' : ''
-  }
+  
   render() {
     return (
       <div className="cardList">
@@ -43,6 +50,9 @@ class Recommend extends React.Component {
                 <Icon className="arrow-down" />
               </button>
             </div>
+            {/* 评论组件 */}
+            <CommentsContainer />
+            {/* 底部按钮 */}
             <div className="richContent-action">
               <div className="button-left">
                 <span
@@ -52,12 +62,16 @@ class Recommend extends React.Component {
                   <AgreeIcon className="agree-icon"/>
                     <p>赞同 <span>{this.state.agreeNum}</span></p>
                 </span>
-                <span className="reset" onClick={this.handleReset}>
+                {/* 取消 */}
+                <span
+                  className={`reset ${this.state.isAgreeActive2 ? 'isActive' : ''}`}
+                  onClick={this.handleReset}
+                >
                   <ResetIcon className="reset-icon"/>
                 </span>
               </div>
               <div className="button-right">
-                <p className="comments">{this.state.commentsNum}条评论</p>
+                <p>{this.state.commentsNum}条评论</p>
                 <p>分享</p>
                 <p>收藏</p>
                 <p>喜欢</p>
