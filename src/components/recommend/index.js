@@ -50,8 +50,6 @@ class Recommend extends React.Component {
                 <Icon className="arrow-down" />
               </button>
             </div>
-            {/* 评论组件 */}
-            <CommentsContainer />
             {/* 底部按钮 */}
             <div className="richContent-action">
               <div className="button-left">
@@ -77,6 +75,8 @@ class Recommend extends React.Component {
                 <p>喜欢</p>
               </div>
             </div>
+            {/* 评论组件 */}
+            <CommentsContainer />
           </div>
         </div>
       </div>
