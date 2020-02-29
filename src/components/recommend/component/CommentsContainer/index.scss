@@ -34,7 +34,7 @@
         width: 24px;
         height:24px;
         margin-right:10px;
-        background-color: pink;
+        // background-color: pink;
         img {
           width:100%;
           height:100%;
@@ -44,6 +44,12 @@
     .item-content {
       padding-left:34px;
     }
+  }
+  .comments-footer {
+    display: flex;
+    padding: 12px 20px;
+    background: #fff;
+    border-top: 1px solid #ebebeb;
   }
 }
 .topbar {

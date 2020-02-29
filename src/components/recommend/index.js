@@ -2,7 +2,7 @@ import React from 'react'
 import { ReactComponent as Icon} from '../../images/arrow-down.svg'
 import { ReactComponent as AgreeIcon} from '../../images/agree.svg'
 import { ReactComponent as ResetIcon} from '../../images/reset.svg'
-import CommentsContainer from './CommentsContainer/index.js'
+import CommentsContainer from './component/CommentsContainer/index.js'
 
 require('./index.scss')
 
@@ -14,7 +14,8 @@ class Recommend extends React.Component {
       commentsNum:'499',
       isAgreeActive: false,
       isAgreeActive2: false,
-      select: ''
+      select: '',
+      showComments: true
     }
   }
   // 同意
@@ -31,12 +32,23 @@ class Recommend extends React.Component {
     console.log('取消')
     this.setState({
       isAgreeActive2: !this.state.isAgreeActive2,
-      isAgreeActive: this.state.isAgreeActive2,
+      isAgreeActive: false,
       agreeNum: this.state.isAgreeActive2? (+this.state.agreeNum + 1) : (+this.state.agreeNum - 1)
+    })
+  }
+  // 显示评论
+  handleShowComments = () => {
+    console.log('显示评论')
+    this.setState({
+      showComments: !this.state.showComments
     })
   }
   
   render() {
+    let commentsContainer = null
+    if (this.state.showComments) {
+      commentsContainer = <CommentsContainer />
+    }
     return (
       <div className="cardList">
         <div className="card">
@@ -69,14 +81,14 @@ class Recommend extends React.Component {
                 </span>
               </div>
               <div className="button-right">
-                <p>{this.state.commentsNum}条评论</p>
+                <p onClick={this.handleShowComments}>{this.state.commentsNum}条评论</p>
                 <p>分享</p>
                 <p>收藏</p>
                 <p>喜欢</p>
               </div>
             </div>
             {/* 评论组件 */}
-            <CommentsContainer />
+            { commentsContainer }
           </div>
         </div>
       </div>

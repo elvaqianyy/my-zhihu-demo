@@ -17,6 +17,7 @@ p:focus,span:focus {
 }
 p,span,a {
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

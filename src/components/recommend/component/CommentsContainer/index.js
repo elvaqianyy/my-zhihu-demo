@@ -1,4 +1,5 @@
 import React from 'react'
+import Editor from '../Editor/index.js'
 require('./index.scss')
 
 export default class CommentsContainer extends React.Component {
@@ -34,6 +35,9 @@ export default class CommentsContainer extends React.Component {
                 <div className="item-content">最后一个被某种东西束缚的，我感受特别大，当初我以为抽烟，只要我想戒，就可以戒，后来真是真香打脸！</div>
               </li>
             </ul>
+          </div>
+          <div className="comments-footer">
+            <Editor />
           </div>
         </div>
       </div>
