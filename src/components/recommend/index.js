@@ -4,6 +4,7 @@ import { ReactComponent as AgreeIcon} from '../../images/agree.svg'
 import { ReactComponent as ResetIcon} from '../../images/reset.svg'
 import CommentsContainer from './component/CommentsContainer/index.js'
 
+import { recommend } from '../../http/getHome.js'
 require('./index.scss')
 
 class Recommend extends React.Component {
@@ -17,6 +18,13 @@ class Recommend extends React.Component {
       select: '',
       showComments: true
     }
+  }
+  componentDidMount() {
+    recommend({
+      pageNo: 1
+    }).then(res =>{
+      console.log('推荐接口：', res)
+    })
   }
   // 同意
   handleAgree = () => {
