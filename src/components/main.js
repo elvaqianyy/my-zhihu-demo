@@ -1,26 +1,24 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom'
+import store from '../store/store'
 import { ReactComponent as Icon } from '../images/icon.svg'
 require('../styles/main.scss')
 class MainComponent extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      overviewData: {}
+      overviewData: {},
+      token: ''
     }
-  }
-  componentWillMount = () => {
-    let token = localStorage.getItem('token')
-    if (!token) {
-      console.log('请登录')
-      return
-    }
-    console.log('继续')
-  }
-  // 把goPage绑定this上
-  goPage = (value) => {
-    console.log('gopage', this.props)
-    // this.props.history.push(`/${value}`)
+    store.subscribe(() => {
+      let state = store.getState()
+      let token = state.token
+      if (token) {
+        this.setState({
+          token
+        })
+      }
+    })
   }
   render() {
     return (

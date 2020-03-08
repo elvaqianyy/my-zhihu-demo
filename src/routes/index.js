@@ -8,11 +8,32 @@ import Question from '../components/question/index.js'
 import Follow from '../components/follow/index.js'
 import HotWrap from '../components/hot/index.js'
 import Recommend from '../components/recommend/index.js'
+import store from "../store/store";
 
 require('../styles/content.scss')
 
 class Layout extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      token: ''
+    }
+  }
+  componentDidMount = () => {
+    console.log('123')
+    let state = store.getState()
+    let token = state.token
+    console.log('state:', state)
+    if (token) {
+      this.setState(() => ({
+        token
+      }))
+    }
+  }
   render() {
+    let { token } = this.state
+    console.log('token:', token)
+    if (!token) return (null)
     return (
       <div className="mm">
         {/* 公共组件部分 */}
@@ -30,6 +51,9 @@ class Layout extends React.Component {
 const BasicRoute = () => (
   <HashRouter>
     <div className="appWrap">
+      <Switch>
+        <Route path="/login" exact component={Login} />
+      </Switch>
       <Layout>
         <Switch>
           <Route path="/home" component={() => (
@@ -42,7 +66,7 @@ const BasicRoute = () => (
               </Switch>
             </Home>
           </Route>
-          <Route path="/login" exact component={Login} />
+          {/* <Route path="/login" exact component={Login} /> */}
           <Route path="/explore" exact component={Explore} />
           <Route path="/question" exact component={Question} />
           {/* <Route path="/follow" component={Follow} />

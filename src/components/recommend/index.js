@@ -5,23 +5,24 @@ import { ReactComponent as ResetIcon} from '../../images/reset.svg'
 import CommentsContainer from './component/CommentsContainer/index.js'
 
 import { recommend } from '../../http/getHome.js'
+import store from "../../store/store";
 require('./index.scss')
 
 class Recommend extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      agreeNum: '3460',
-      commentsNum:'499',
-      isAgreeActive: false,
-      isAgreeActive2: false,
-      select: '',
-      showComments: false,
       info: [],
       isload:true
     }
   }
   componentDidMount() {
+    let state = store.getState()
+    let token = state.token
+    console.log('token:', token)
+    if (!token) {
+      this.context.router.history.push('login')
+    }
     recommend({
       pageNo: 1
     }).then(({data}) => {
@@ -46,7 +47,7 @@ class Recommend extends React.Component {
       }
     })
   }
-  // 撤销同意
+  // 不赞同
   handleReset = (item, i) => {
     console.log('反对',item)
     this.setState((state) => {
@@ -58,18 +59,17 @@ class Recommend extends React.Component {
     })
   }
   // 显示评论
-  handleShowComments = () => {
+  handleShowComments = (item, i) => {
     console.log('显示评论')
-    this.setState({
-      showComments: !this.state.showComments
+    this.setState((state) => {
+      state.info[i].isComments = !state.info[i].isComments
+      return {
+        info: state.info
+      }
     })
   }
   
   render() {
-    let commentsContainer = null
-    if (this.state.showComments) {
-      commentsContainer = <CommentsContainer />
-    }
     const { info, isload } = this.state
     console.log('info, isload', info, isload)
     if (isload) {
@@ -111,14 +111,16 @@ class Recommend extends React.Component {
                       </span>
                     </div>
                     <div className="button-right">
-                      <p onClick={this.handleShowComments}>{item.commentsNum}条评论</p>
+                      <p onClick={() => this.handleShowComments(item, i)}>{item.commentsNum}条评论</p>
                       <p>分享</p>
                       <p>收藏</p>
                       <p>喜欢</p>
                     </div>
                   </div>
                   {/* 评论组件 */}
-                  { commentsContainer }
+                  {
+                    item.isComments ?  <CommentsContainer /> : null
+                  }
                 </div>
               </div>
             ))
