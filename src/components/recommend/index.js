@@ -16,32 +16,45 @@ class Recommend extends React.Component {
       isAgreeActive: false,
       isAgreeActive2: false,
       select: '',
-      showComments: true
+      showComments: false,
+      info: [],
+      isload:true
     }
   }
   componentDidMount() {
     recommend({
       pageNo: 1
-    }).then(res =>{
-      console.log('推荐接口：', res)
+    }).then(({data}) => {
+      console.log('推荐接口：', data)
+      if(data.code === '000000') {
+        this.setState({
+          info: data.body,
+          isload: false
+        })
+      }
     })
   }
   // 同意
-  handleAgree = () => {
-    console.log('同意')
-    this.setState({
-      isAgreeActive: !this.state.isAgreeActive,
-      isAgreeActive2: false,
-      agreeNum: this.state.isAgreeActive? (+this.state.agreeNum - 1) : (+this.state.agreeNum + 1)
+  handleAgree = (item, i) => {
+    console.log('同意', item, i)
+    // 如果修改了state，又马上要使用state值，那么就需要像下面这样写
+    this.setState((state) => {
+      state.info[i].selected = !state.info[i].selected
+      state.info[i].reject = false
+      return {
+        info: state.info
+      }
     })
   }
   // 撤销同意
-  handleReset = () => {
-    console.log('取消')
-    this.setState({
-      isAgreeActive2: !this.state.isAgreeActive2,
-      isAgreeActive: false,
-      agreeNum: this.state.isAgreeActive2? (+this.state.agreeNum + 1) : (+this.state.agreeNum - 1)
+  handleReset = (item, i) => {
+    console.log('反对',item)
+    this.setState((state) => {
+      state.info[i].reject = !state.info[i].reject
+      state.info[i].selected = false
+      return {
+        info: state.info
+      }
     })
   }
   // 显示评论
@@ -57,50 +70,62 @@ class Recommend extends React.Component {
     if (this.state.showComments) {
       commentsContainer = <CommentsContainer />
     }
-    return (
-      <div className="cardList">
-        <div className="card">
-          <h2 className="card-title">摧毁一个汉字有多简单？</h2>
-          <div className="richContent">
-            <div className="richContent-inner">
-              <span>
-              纤雀：贬损他，不遗余力的贬损他。 吃饭掉粒米，就用筷子打着他的手关节骂：吃饭都不会，猪都比你强。 走路摔一跤，就用小棍拍着他的小腿肚骂：走路都能摔跤，你…
-              </span>
-              <button className="readAll">阅读全文
-                <Icon className="arrow-down" />
-              </button>
-            </div>
-            {/* 底部按钮 */}
-            <div className="richContent-action">
-              <div className="button-left">
-                <span
-                  className={`agree ${this.state.isAgreeActive ? 'isActive' : ''}`}
-                  onClick={this.handleAgree}
-                >
-                  <AgreeIcon className="agree-icon"/>
-                    <p>赞同 <span>{this.state.agreeNum}</span></p>
-                </span>
-                {/* 取消 */}
-                <span
-                  className={`reset ${this.state.isAgreeActive2 ? 'isActive' : ''}`}
-                  onClick={this.handleReset}
-                >
-                  <ResetIcon className="reset-icon"/>
-                </span>
+    const { info, isload } = this.state
+    console.log('info, isload', info, isload)
+    if (isload) {
+      return (
+        <div>loading...</div>
+      )
+    } else {
+      return (
+        <div className="cardList">
+          {
+            info.map((item, i) => (
+              <div className="card" key={ i }>
+                <h2 className="card-title">{item.title}</h2>
+                <div className="richContent">
+                  <div className="richContent-inner">
+                    <span>
+                    {item.content}
+                    </span>
+                    <button className="readAll">阅读全文
+                      <Icon className="arrow-down" />
+                    </button>
+                  </div>
+                  {/* 底部按钮 */}
+                  <div className="richContent-action">
+                    <div className="button-left">
+                      <span
+                        className={`agree ${item.selected ? 'isActive' : ''}`}
+                        onClick={() => this.handleAgree(item, i)}
+                      >
+                        <AgreeIcon className="agree-icon"/>
+                          <p>赞同 <span>{item.agreeNum}</span></p>
+                      </span>
+                      {/* 取消 */}
+                      <span
+                        className={`reset ${item.reject ? 'isActive' : ''}`}
+                        onClick={() => this.handleReset(item, i)}
+                      >
+                        <ResetIcon className="reset-icon"/>
+                      </span>
+                    </div>
+                    <div className="button-right">
+                      <p onClick={this.handleShowComments}>{item.commentsNum}条评论</p>
+                      <p>分享</p>
+                      <p>收藏</p>
+                      <p>喜欢</p>
+                    </div>
+                  </div>
+                  {/* 评论组件 */}
+                  { commentsContainer }
+                </div>
               </div>
-              <div className="button-right">
-                <p onClick={this.handleShowComments}>{this.state.commentsNum}条评论</p>
-                <p>分享</p>
-                <p>收藏</p>
-                <p>喜欢</p>
-              </div>
-            </div>
-            {/* 评论组件 */}
-            { commentsContainer }
-          </div>
+            ))
+          }
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 export default Recommend
